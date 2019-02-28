@@ -54,7 +54,7 @@ namespace WebApplication1.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
 
-                var state = _context.States.First(s => String.Equals(s.Name.ToLower(), stateName.ToLower()));
+                var state = _context.States.FirstOrDefault(s => String.Equals(s.Name.ToLower(), stateName.ToLower()));
 
                 if (state is null)
                 {
@@ -82,25 +82,52 @@ namespace WebApplication1.Areas.Admin.Controllers
         }
  
         [HttpPut("{id}")]
-        public async Task<IActionResult> Edit()
+        public async Task<IActionResult> Edit(int id, string name, string stateName)
         {
             if (ModelState.IsValid)
             {
-                ApplicationDbMemory.Initialize();
-                _context = ApplicationDbMemory.GetDb();
-                return Ok("Edit");
+                var person = _context.Persons.First(p => p.Id == id);
+
+                if(person is null)
+                {
+                    return StatusCode(404);
+                }
+
+                lock (_context.Persons)
+                {
+                    if (!String.IsNullOrEmpty(name))
+                    {
+                        person.Name = name;
+                    }
+                    if (!String.IsNullOrEmpty(stateName))
+                    {
+                        var state = _context.States.FirstOrDefault(s => String.Equals(s.Name.ToLower(), stateName.ToLower()));
+                        if (state != null)
+                        {
+                            person.StateId = state.Id;
+                            person.State = state;
+                        }
+                    }
+                }
+
+                return Json(person);
             }
             return StatusCode(500, "Edit");
         }
  
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete()
+        public async Task<IActionResult> Delete(int id)
         {
             if (ModelState.IsValid)
             {
-                ApplicationDbMemory.Initialize();
-                _context = ApplicationDbMemory.GetDb();
-                return Ok("Delete");
+                var person = _context.Persons.First(p => p.Id == id);
+
+                if (person is null)
+                {
+                    return StatusCode(404);
+                }
+
+                _context.Persons.Remove(person);
             }
             return StatusCode(500, "Delete");
         }
