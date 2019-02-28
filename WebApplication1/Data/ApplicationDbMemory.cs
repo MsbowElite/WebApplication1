@@ -6,14 +6,14 @@ using WebApplication1.Models;
 
 namespace WebApplication1.Data
 {
-    public static class ApplicationDbMemory
+    public class ApplicationDbMemory
     {
 
         private static DbMemory _db;
 
         public static void Initialize()
         {
-
+            GenerateDatabase();
         }
 
         private static void GenerateDatabase()
@@ -92,7 +92,7 @@ namespace WebApplication1.Data
 
             foreach (var state in states)
             {
-                persons.Add(new Person() { Id = counter, Name = String.Concat("Joao", counter) });
+                persons.Add(new Person() { Id = counter, Name = String.Concat("Joao", counter), StateId = state.Id });
             }
 
             return persons;
