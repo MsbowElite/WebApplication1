@@ -7,5 +7,7 @@ namespace WebApplication1.Models.ViewModels
 {
     public class UserViewModel
     {
+        public string Username { get; set; }
+        public string Password { get; set; }
     }
 }

@@ -38,7 +38,7 @@ namespace WebApplication1.Areas.Admin.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
-            var person = _context.Persons.First(p => p.Id == id);
+            var person = _context.Persons.FirstOrDefault(p => p.Id == id);
             if (person != null)
             {
                 var personViewModel = new PersonViewModel() { Name = person.Name, StateName = person.State.Name };
@@ -86,7 +86,7 @@ namespace WebApplication1.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                var person = _context.Persons.First(p => p.Id == id);
+                var person = _context.Persons.FirstOrDefault(p => p.Id == id);
 
                 if(person is null)
                 {
@@ -120,7 +120,7 @@ namespace WebApplication1.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                var person = _context.Persons.First(p => p.Id == id);
+                var person = _context.Persons.FirstOrDefault(p => p.Id == id);
 
                 if (person is null)
                 {

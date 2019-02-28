@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebApplication1.Models;
+using WebApplication1.Models.ViewModels;
 using WebApplication1.Services;
 
 namespace WebApplication1.Areas.Admin.Controllers
@@ -23,7 +24,7 @@ namespace WebApplication1.Areas.Admin.Controllers
 
         [AllowAnonymous]
         [HttpPost("authenticate")]
-        public IActionResult Authenticate([FromBody]User userParam)
+        public IActionResult Authenticate([FromBody]UserViewModel userParam)
         {
             var user = _userService.Authenticate(userParam.Username, userParam.Password);
 
