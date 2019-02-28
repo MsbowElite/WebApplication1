@@ -12,5 +12,9 @@ namespace WebApplication1.Models
 
         [Required]
         public string Name { get; set; }
+
+        [Required]
+        [Display(Name = "Item")]
+        public int StateId { get; set; }
     }
 }
