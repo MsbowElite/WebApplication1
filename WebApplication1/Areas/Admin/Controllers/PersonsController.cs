@@ -83,7 +83,7 @@ namespace WebApplication1.Areas.Admin.Controllers
                     _context.Persons.Add(person);
                 }
 
-                return Json(person);
+                return Json(new PersonViewModel() { Name = person.Name, StateName = person.State.Name, CPF = person.CPF, BirthDate = new DateTime(person.BirthDate) });
             }
             return StatusCode(500, "Create");
         }
@@ -121,11 +121,11 @@ namespace WebApplication1.Areas.Admin.Controllers
                     }
                     if(cpf > 0 && cpf.ToString().Length == 11)
                     {
-
+                        person.CPF = cpf;
                     }
                 }
 
-                return Json(person);
+                return Json(new PersonViewModel() { Name = person.Name, StateName = person.State.Name, CPF = person.CPF, BirthDate = new DateTime(person.BirthDate) });
             }
             return StatusCode(500, "Edit");
         }
