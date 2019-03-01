@@ -64,11 +64,8 @@ namespace WebApplication1.Areas.Admin.Controllers
                 if (cpf.ToString().Length != 11 || cpf < 0)
                     return StatusCode(400);
 
-                DateTime auxBirthDate;
                 if (birthDate is null)
                     return StatusCode(400);
-                else
-                    auxBirthDate = (DateTime)birthDate;
 
                 var person = new Person();
                 lock (_context.Persons)
@@ -79,7 +76,7 @@ namespace WebApplication1.Areas.Admin.Controllers
                         Name = name,
                         StateId = state.Id,
                         State = state,
-                        BirthDate = auxBirthDate.Ticks,
+                        BirthDate = birthDate.Value.Ticks,
                         CPF = cpf
                     };
 
@@ -92,7 +89,7 @@ namespace WebApplication1.Areas.Admin.Controllers
         }
  
         [HttpPut("{id}")]
-        public async Task<IActionResult> Edit(int id, string name, string stateName)
+        public async Task<IActionResult> Edit(int id, string name, string stateName, DateTime? birthDate, long cpf)
         {
             if (ModelState.IsValid)
             {
@@ -117,6 +114,14 @@ namespace WebApplication1.Areas.Admin.Controllers
                             person.StateId = state.Id;
                             person.State = state;
                         }
+                    }
+                    if (birthDate != null)
+                    {
+                        person.BirthDate = birthDate.Value.Ticks;
+                    }
+                    if(cpf > 0 && cpf.ToString().Length == 11)
+                    {
+
                     }
                 }
 
