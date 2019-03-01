@@ -143,6 +143,7 @@ namespace WebApplication1.Areas.Admin.Controllers
                 }
 
                 _context.Persons.Remove(person);
+                return Ok();
             }
             return StatusCode(500, "Delete");
         }
