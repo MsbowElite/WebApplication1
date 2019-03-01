@@ -17,6 +17,10 @@ namespace WebApplication1.Models
         [Display(Name = "Item")]
         public int StateId { get; set; }
 
+        public long CPF { get; set; }
+
+        public long BirthDate { get; set; }
+
         public State State { get; set; }
     }
 }

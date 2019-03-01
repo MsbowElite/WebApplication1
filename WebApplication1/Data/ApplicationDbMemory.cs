@@ -179,12 +179,14 @@ namespace WebApplication1.Data
         {
 
             int counter = 1;
+            long cpf = 10000000000;
             List<Person> persons = new List<Person>();
 
             foreach (var state in states)
             {
-                persons.Add(new Person() { Id = counter, Name = String.Concat("Joao", counter), StateId = state.Id, State = state });
+                persons.Add(new Person() { Id = counter, Name = String.Concat("Joao", counter), StateId = state.Id, State = state, CPF = cpf});
                 counter++;
+                cpf++;
             }
 
             return persons;

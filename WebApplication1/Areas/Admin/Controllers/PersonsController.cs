@@ -28,10 +28,10 @@ namespace WebApplication1.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-                var personViewModel = new List<PersonViewModel>();
-                personViewModel.AddRange(_context.Persons.Select(p => new PersonViewModel { Name = p.Name, StateName = p.State.Name }));
+            var personViewModel = new List<PersonViewModel>();
+            personViewModel.AddRange(_context.Persons.Select(p => new PersonViewModel { Name = p.Name, StateName = p.State.Name, CPF = p.CPF, BirthDate = new DateTime(p.BirthDate) }));
 
-                return Json(personViewModel);
+            return Json(personViewModel);
         }
 
         //GET ALL
@@ -41,7 +41,7 @@ namespace WebApplication1.Areas.Admin.Controllers
             var person = _context.Persons.FirstOrDefault(p => p.Id == id);
             if (person != null)
             {
-                var personViewModel = new PersonViewModel() { Name = person.Name, StateName = person.State.Name };
+                var personViewModel = new PersonViewModel() { Name = person.Name, StateName = person.State.Name, CPF = person.CPF, BirthDate = new DateTime(person.BirthDate) };
                 return Json(personViewModel);
             }
             return StatusCode(404);
@@ -49,7 +49,7 @@ namespace WebApplication1.Areas.Admin.Controllers
 
         [HttpPost]
         //[ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(string name, string stateName)
+        public async Task<IActionResult> Create(string name, string stateName, DateTime? birthDate, long cpf)
         {
             if (ModelState.IsValid)
             {
@@ -61,16 +61,26 @@ namespace WebApplication1.Areas.Admin.Controllers
                     return StatusCode(404);
                 }
 
+                if (cpf.ToString().Length != 11 || cpf < 0)
+                    return StatusCode(400);
+
+                DateTime auxBirthDate;
+                if (birthDate is null)
+                    return StatusCode(400);
+                else
+                    auxBirthDate = (DateTime)birthDate;
+
                 var person = new Person();
                 lock (_context.Persons)
                 {
-
                     person = new Person()
                     {
                         Id = _context.Persons.Max(p => p.Id) + 1,
                         Name = name,
                         StateId = state.Id,
-                        State = state
+                        State = state,
+                        BirthDate = auxBirthDate.Ticks,
+                        CPF = cpf
                     };
 
                     _context.Persons.Add(person);

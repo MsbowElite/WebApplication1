@@ -12,5 +12,7 @@ namespace WebApplication1.Models.ViewModels
         public string Name { get; set; }
         [Display(Name = "UF")]
         public string StateName { get; set; }
+        public DateTime BirthDate { get; set; }
+        public long CPF { get; set; }
     }
 }
